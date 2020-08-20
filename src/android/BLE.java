@@ -95,7 +95,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
     BluetoothAdapter bluetoothAdapter;
 
     // key is the MAC Address
-    Map<String, Peripheral> peripherals = new LinkedHashMap<String, Peripheral>();
+    Map<String, cordova.plugin.BLE.Peripheral> peripherals = new LinkedHashMap<String, cordova.plugin.BLE.Peripheral>();
 
     // scan options
     boolean reportDuplicates = false;
@@ -348,7 +348,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
 
             // just low energy devices (filters out classic and unknown devices)
             if (type == DEVICE_TYPE_LE || type == DEVICE_TYPE_DUAL) {
-                Peripheral p = new Peripheral(device);
+                cordova.plugin.BLE.Peripheral p = new cordova.plugin.BLE.Peripheral(device);
                 bonded.put(p.asJSONObject());
             }
         }
@@ -415,13 +415,13 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
     }
 
     private void connect(CallbackContext callbackContext, String macAddress) {
-        if (!peripherals.containsKey(macAddress) && BLECentralPlugin.this.bluetoothAdapter.checkBluetoothAddress(macAddress)) {
-            BluetoothDevice device = BLECentralPlugin.this.bluetoothAdapter.getRemoteDevice(macAddress);
-            Peripheral peripheral = new Peripheral(device);
+        if (!peripherals.containsKey(macAddress) && BLE.this.bluetoothAdapter.checkBluetoothAddress(macAddress)) {
+            BluetoothDevice device = BLE.this.bluetoothAdapter.getRemoteDevice(macAddress);
+            cordova.plugin.BLE.Peripheral peripheral = new cordova.plugin.BLE.Peripheral(device);
             peripherals.put(macAddress, peripheral);
         }
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
         if (peripheral != null) {
             peripheral.connect(callbackContext, cordova.getActivity(), false);
         } else {
@@ -431,13 +431,13 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
     }
 
     private void autoConnect(CallbackContext callbackContext, String macAddress) {
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
 
         // allow auto-connect to connect to devices without scanning
         if (peripheral == null) {
             if (BluetoothAdapter.checkBluetoothAddress(macAddress)) {
                 BluetoothDevice device = bluetoothAdapter.getRemoteDevice(macAddress);
-                peripheral = new Peripheral(device);
+                peripheral = new cordova.plugin.BLE.Peripheral(device);
                 peripherals.put(device.getAddress(), peripheral);
             } else {
                 callbackContext.error(macAddress + " is not a valid MAC address.");
@@ -451,7 +451,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
 
     private void disconnect(CallbackContext callbackContext, String macAddress) {
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
         if (peripheral != null) {
             peripheral.disconnect();
             callbackContext.success();
@@ -464,7 +464,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
     }
 
     private void queueCleanup(CallbackContext callbackContext, String macAddress) {
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
         if (peripheral != null) {
             peripheral.queueCleanup();
         }
@@ -508,7 +508,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
   
     private void requestMtu(CallbackContext callbackContext, String macAddress, int mtuValue) {
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
         if (peripheral != null) {
             peripheral.requestMtu(callbackContext, mtuValue);
         } else {
@@ -519,7 +519,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
     }
     
     private void requestConnectionPriority(CallbackContext callbackContext, String macAddress, String priority) {
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
 
         if (peripheral == null) {
             callbackContext.error("Peripheral " + macAddress + " not found.");
@@ -545,7 +545,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
 
     private void refreshDeviceCache(CallbackContext callbackContext, String macAddress, long timeoutMillis) {
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
 
         if (peripheral != null) {
             peripheral.refreshDeviceCache(callbackContext, timeoutMillis);
@@ -558,7 +558,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
 
     private void read(CallbackContext callbackContext, String macAddress, UUID serviceUUID, UUID characteristicUUID) {
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
 
         if (peripheral == null) {
             callbackContext.error("Peripheral " + macAddress + " not found.");
@@ -577,7 +577,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
 
     private void readRSSI(CallbackContext callbackContext, String macAddress) {
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
 
         if (peripheral == null) {
             callbackContext.error("Peripheral " + macAddress + " not found.");
@@ -594,7 +594,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
     private void write(CallbackContext callbackContext, String macAddress, UUID serviceUUID, UUID characteristicUUID,
                        byte[] data, int writeType) {
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
 
         if (peripheral == null) {
             callbackContext.error("Peripheral " + macAddress + " not found.");
@@ -613,7 +613,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
 
     private void registerNotifyCallback(CallbackContext callbackContext, String macAddress, UUID serviceUUID, UUID characteristicUUID) {
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
         if (peripheral != null) {
 
             if (!peripheral.isConnected()) {
@@ -634,7 +634,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
 
     private void removeNotifyCallback(CallbackContext callbackContext, String macAddress, UUID serviceUUID, UUID characteristicUUID) {
 
-        Peripheral peripheral = peripherals.get(macAddress);
+        cordova.plugin.BLE.Peripheral peripheral = peripherals.get(macAddress);
         if (peripheral != null) {
 
             if (!peripheral.isConnected()) {
@@ -675,9 +675,9 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
         }
 
         // clear non-connected cached peripherals
-        for(Iterator<Map.Entry<String, Peripheral>> iterator = peripherals.entrySet().iterator(); iterator.hasNext(); ) {
-            Map.Entry<String, Peripheral> entry = iterator.next();
-            Peripheral device = entry.getValue();
+        for(Iterator<Map.Entry<String, cordova.plugin.BLE.Peripheral>> iterator = peripherals.entrySet().iterator(); iterator.hasNext(); ) {
+            Map.Entry<String, cordova.plugin.BLE.Peripheral> entry = iterator.next();
+            cordova.plugin.BLE.Peripheral device = entry.getValue();
             boolean connecting = device.isConnecting();
             if (connecting){
                 LOG.d(TAG, "Not removing connecting device: " + device.getDevice().getAddress());
@@ -701,7 +701,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
                 @Override
                 public void run() {
                     LOG.d(TAG, "Stopping Scan");
-                    BLECentralPlugin.this.bluetoothAdapter.stopLeScan(BLECentralPlugin.this);
+                    BLE.this.bluetoothAdapter.stopLeScan(BLE.this);
                 }
             }, scanSeconds * 1000);
         }
@@ -726,8 +726,8 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
         JSONArray json = new JSONArray();
 
         // do we care about consistent order? will peripherals.values() be in order?
-        for (Map.Entry<String, Peripheral> entry : peripherals.entrySet()) {
-            Peripheral peripheral = entry.getValue();
+        for (Map.Entry<String, cordova.plugin.BLE.Peripheral> entry : peripherals.entrySet()) {
+            cordova.plugin.BLE.Peripheral peripheral = entry.getValue();
             if (!peripheral.isUnscanned()) {
                 json.put(peripheral.asJSONObject());
             }
@@ -745,7 +745,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
 
         if (!alreadyReported) {
 
-            Peripheral peripheral = new Peripheral(device, rssi, scanRecord);
+            cordova.plugin.BLE.Peripheral peripheral = new cordova.plugin.BLE.Peripheral(device, rssi, scanRecord);
             peripherals.put(device.getAddress(), peripheral);
 
             if (discoverCallback != null) {
@@ -755,7 +755,7 @@ public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallba
             }
 
         } else {
-            Peripheral peripheral = peripherals.get(address);
+            cordova.plugin.BLE.Peripheral peripheral = peripherals.get(address);
             if (peripheral != null) {
                 peripheral.update(rssi, scanRecord);
                 if (reportDuplicates && discoverCallback != null) {
