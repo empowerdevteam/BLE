@@ -1,4 +1,4 @@
-package com.megster.cordova.ble.central;
+package cordova.plugin.BLE;
 
 import org.apache.cordova.CallbackContext;
 
