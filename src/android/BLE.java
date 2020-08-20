@@ -43,7 +43,7 @@ import java.util.*;
 
 import static android.bluetooth.BluetoothDevice.DEVICE_TYPE_DUAL;
 import static android.bluetooth.BluetoothDevice.DEVICE_TYPE_LE;
-public class BLE extends extends CordovaPlugin implements BluetoothAdapter.LeScanCallback {
+public class BLE extends  CordovaPlugin implements BluetoothAdapter.LeScanCallback {
     // actions
     private static final String SCAN = "scan";
     private static final String START_SCAN = "startScan";
