@@ -12,8 +12,22 @@
 				<param name="android-package" value="cordova.plugin.BLE.BLE" />
 			</feature>
 		</config-file>
-		<config-file parent="/*" target="AndroidManifest.xml" />
+		<config-file parent="/*" target="AndroidManifest.xml" >
+			 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+            <uses-permission android:name="android.permission.BLUETOOTH"/>
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+		</config-file>
 		<source-file src="src/android/BLE.java" target-dir="src/cordova/plugin/BLE/BLE" />
+		<source-file src="src/android/SequentialCallbackContext.java"
+            target-dir="src/cordova/plugin/BLE/BLE"/>
+        <source-file src="src/android/BLECommand.java"
+            target-dir="src/cordova/plugin/BLE/BLE"/>
+        <source-file src="src/android/Peripheral.java"
+            target-dir="src/cordova/plugin/BLE/BLE"/>
+        <source-file src="src/android/Helper.java"
+            target-dir="src/cordova/plugin/BLE/BLE"/>
+        <source-file src="src/android/UUIDHelper.java"
+            target-dir="src/cordova/plugin/BLE/BLE"/>
 	</platform>
 	<platform name="ios">
 		<config-file parent="/*" target="config.xml">
